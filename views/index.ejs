@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid tracker</title>
+    <style>
+        html, body{
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            font-size: 20px;
+        }
+        header{
+            width: 100%;
+            height: 10%;
+        }
+        header span {
+            font-size: 36px;
+            margin: 10px;
+            color:#337ab7;
+        }
+        .card{
+            min-height: 30%;
+            height: auto;
+            display: grid;
+            text-align: center;
+            margin: 2rem 0 2em;
+            width: 85%;
+            position: relative;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 1rem;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            padding: 10px;
+        }
+        .country{
+            font-size: 24px;
+            color:#337ab7;
+        }
+        input{
+            height: 45px;
+            width: 12rem;
+            border-radius: 1rem;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: 200;
+            padding-left: 10px;
+            margin: 10px 0 0;
+            margin-left: 1rem;
+        }
+
+        button[type="button"]{
+            height: 45px;
+            width: 4rem;
+            border: none;
+            outline: none;
+            border-radius: 1rem;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            background: #fff;
+        }
+        input:focus{ outline: none; }
+        #getToTop{
+            font-size: 24px;
+            background: #337ab7;
+            height: 1.7rem;
+            width: 6rem;
+            text-align: center;
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span>Covid tracker</span>
+    </header>
+    <div id="search">
+        <input type="text" id="search-country">
+        <button id="search" type="button">Search</button>
+    </div>
+    <% data.data.forEach(e => { %>
+        <div class="card" id="<%= (e.country).toLowerCase() %>">
+            <span class="country"><%= e.country %></span> 
+            <p class="cases">Cases: <%= e.cases %></p>
+            <p class="todayCases">Today cases: <%= e.todayCases %></p>
+            <p class="deaths">Deaths: <%= e.deaths %></p>
+            <p class="todayDeaths">Today deaths: <%= e.todayDeaths %></p>
+            <p class="critical">Critical: <%= e.critical %></p>
+            <p class="casesPerMilinon">Cases per one milion: <%= e.casesPerOneMillion %></p>
+            <p class="deathsPerMilion">Deaths per one milion<%= e.deathsPerOneMillion %></p>
+        </div>
+    <% }) %>
+    <div id="getToTop">
+        Go to top
+    </div>
+    <script defer>
+        function findPos(obj){
+            let cur = 0;
+            if(obj.offsetParent){
+                do{
+                    cur += obj.offsetTop;
+                } while(obj = obj.offsetParent);
+                return [cur];
+            }
+        }
+
+        document.querySelector("#search").addEventListener("click", (e)=>{
+            let country = document.querySelector("#search-country").value;
+            country = country.toLowerCase();
+            window.scroll(0, findPos(document.querySelector(`#${country}`)))
+            console.log(window.scrollY);
+        })
+        
+        document.querySelector("#getToTop").addEventListener("click", ()=>{ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    </script>
+</body>
+</html>
